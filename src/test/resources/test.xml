@@ -1,0 +1,7 @@
+<suite thread-count="1" verbose="1" name="Orangehrm">
+    <test name="Login Page Test">
+        <classes>
+            <class name="testrunner.LoginTestRunner"/>
+        </classes>
+    </test>
+</suite>
