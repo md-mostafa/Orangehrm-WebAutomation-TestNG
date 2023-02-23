@@ -27,4 +27,8 @@ public class RandomInfoUtils {
     public static String getPassword(){
         return "P@ssword123"+generateRandomNumber(100, 500);
     }
+
+    public static String getUserId() {
+        return ""+generateRandomNumber(100, 500);
+    }
 }

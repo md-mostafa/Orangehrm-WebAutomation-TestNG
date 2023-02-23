@@ -86,13 +86,39 @@ public class PIMTestRunner extends Setup {
         Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected));
     }
 
+    @Test(priority = 4, description = "Update user id")
     public void updateUser() throws InterruptedException {
         pimPage = new PIMPage(driver);
         Thread.sleep(5000);
         pimPage.clickOnFirstRecord();
+        Thread.sleep(5000);
         String personalDetailsLabel_actual = pimPage.getPersonalDetailsLabel();
         String personalDetailsLabel_expected = "Personal Details";
         Assert.assertTrue(personalDetailsLabel_actual.contains(personalDetailsLabel_expected));
         Thread.sleep(5000);
+
+        String id =""+RandomInfoUtils.getUserId();
+        pimPage.enterEmployeedId(id);
+        Thread.sleep(5000);
+        pimPage.clickOnSaveBtn();
+        Thread.sleep(5000);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 0, "userid", id);
+    }
+    @Test(priority = 5, description = "Search user by id")
+    public void searchUserById() throws InterruptedException {
+        pimPage = new PIMPage(driver);
+        pimPage.clickOnEmployeeListBtn();
+        Thread.sleep(5000);
+        String userId = Utils.getProperty("./src/test/resources/NewUser.json", 0, "userid");
+        Thread.sleep(5000);
+
+        pimPage.enterEmployeedIdInSearchField(userId);
+        Thread.sleep(5000);
+        pimPage.clickOnSearchBtn();
+        Thread.sleep(5000);
+
+        String isUserFound_actual = pimPage.getUserFoundTxt();
+        String isUserFound_expected = "Record Found";
+        Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected));
     }
 }

@@ -1,13 +1,16 @@
 package pages;
 
 import org.json.simple.JSONObject;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import setup.Setup;
 import utils.Utils;
 
+import java.security.Key;
 import java.util.List;
 
 public class PIMPage {
@@ -30,15 +33,24 @@ public class PIMPage {
     @FindBy(xpath = "//div[@class='orangehrm-paper-container']//span")
     WebElement labelUserFound;
 
-    @FindBy(xpath = "//div[contains(@class, 'oxd-table-card')]")
+    @FindBy(xpath = "//div[contains(@class, 'oxd-table-cell')]")
     List<WebElement> userRecords;
 
     @FindBy(xpath = "//h6[text()='Personal Details']")
     WebElement labelPersonalDetails;
 
+    @FindBy(xpath = "//input[contains(@class, 'oxd-input')]")
+    List<WebElement> inpPersonalDetails;
+
+    @FindBy(xpath = "//button[text() =' Save ']")
+    List<WebElement> btnPersonalDetails;
+
+    WebDriver driver;
+
 
     public PIMPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
+        this.driver = driver;
     }
 
     public void clickOnPIMFromDashboard() {
@@ -93,5 +105,26 @@ public class PIMPage {
 
     public String getPersonalDetailsLabel(){
         return labelPersonalDetails.getText();
+    }
+
+    public void enterEmployeedId(String id){
+        WebElement inpEmployeeId = inpPersonalDetails.get(5);
+        inpEmployeeId.click();
+
+        Actions action = new Actions(driver);
+        action.doubleClick(inpEmployeeId).perform();
+        //action.click(inpEmployeeId).sendKeys(Keys.CONTROL).keyDown(Keys.SHIFT).keyUp(Keys.SHIFT).sendKeys(Keys.BACK_SPACE).perform();
+        inpEmployeeId.sendKeys(id);
+    }
+
+    public void enterEmployeedIdInSearchField(String id){
+        WebElement empNameSearchField =  srchInputs.get(1);
+        empNameSearchField.sendKeys(id);
+    }
+
+
+    public void clickOnSaveBtn() {
+        WebElement btnPersonalDetail = btnPersonalDetails.get(0);
+        btnPersonalDetail.click();
     }
 }
