@@ -30,4 +30,8 @@ public class Waits {
     public void waitToBeDisplayed(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
+
+    public void waitToBeClickable(WebElement element){
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
 }
