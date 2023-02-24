@@ -25,16 +25,6 @@ public class PIMPage {
     @FindBy(xpath = "//a[text()='Employee List']")
     WebElement btnEmployedList;
 
-    @FindBy(xpath = "//h6[text()='Personal Details']")
-    WebElement labelPersonalDetails;
-
-    @FindBy(xpath = "//input[contains(@class, 'oxd-input')]")
-    List<WebElement> inpPersonalDetails;
-
-    @FindBy(xpath = "//button[text() =' Save ']")
-    List<WebElement> btnPersonalDetails;
-
-
     WebDriver driver;
     private Waits wait;
 
@@ -60,38 +50,10 @@ public class PIMPage {
         //Thread.sleep(5000);
     }
 
-
     public void clickOnEmployeeListBtn() {
         Logs.info("Clicking on Employee List button");
         wait.waitToBeDisplayed(btnEmployedList);
         btnEmployedList.click();
     }
 
-
-    public String getPersonalDetailsLabel(){
-        Logs.info("Getting the 'Personal Details' label");
-        wait.waitToBeDisplayed(labelPersonalDetails);
-        return labelPersonalDetails.getText();
-    }
-
-    public void enterEmployeedId(String id){
-        WebElement inpEmployeeId = inpPersonalDetails.get(5);
-        wait.waitToBeDisplayed(inpEmployeeId);
-        wait.waitToBeClickable(inpEmployeeId);
-        Logs.info("Clicking on the Employee id input field");
-        inpEmployeeId.click();
-
-        Actions action = new Actions(driver);
-        action.doubleClick(inpEmployeeId).perform();
-        Logs.info("Entering employee id in the input field");
-        inpEmployeeId.sendKeys(id);
-    }
-
-    public void clickOnSaveBtn() {
-        WebElement btnPersonalDetail = btnPersonalDetails.get(0);
-        wait.waitToBeDisplayed(btnPersonalDetail);
-        wait.waitToBeClickable(btnPersonalDetail);
-        Logs.info("CLicking ont he save button");
-        btnPersonalDetail.click();
-    }
 }
