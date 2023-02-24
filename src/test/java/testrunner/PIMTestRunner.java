@@ -16,10 +16,12 @@ public class PIMTestRunner extends Setup {
     SearchPage srchPage;
     AddEmployeePage addEmpPage;
     PersonalDetailsPage prsonalDtlsPage;
+    SidePanelPage sidePnlPage;
+    private ContactDetailsPage contactPage;
 
 
     @BeforeClass
-    public void doLogin() {
+    public void doLoginAsAdmin() {
         loginPage = new LoginPage(driver);
         loginPage.doLogin("Admin", "admin123");
         pimPage = new PIMPage(driver);
@@ -27,6 +29,9 @@ public class PIMTestRunner extends Setup {
         addEmpPage = new AddEmployeePage(driver);
         prsonalDtlsPage = new PersonalDetailsPage(driver);
         logoutPage = new LogoutPage(driver);
+        sidePnlPage = new SidePanelPage(driver);
+        contactPage = new ContactDetailsPage(driver);
+
     }
 
     @Test(priority = 1, description = "Adding first employee")
@@ -42,6 +47,8 @@ public class PIMTestRunner extends Setup {
         String lastName = RandomInfoUtils.getLastName();
         addEmpPage.inputLastName(lastName);
         String userName = RandomInfoUtils.getUserName();
+        String id = RandomInfoUtils.getUserId();
+        addEmpPage.inputEmployeeId(id);
         addEmpPage.inputUserName(userName);
         String password = RandomInfoUtils.getPassword();
         addEmpPage.inputPassword(password);
@@ -55,7 +62,7 @@ public class PIMTestRunner extends Setup {
         Utils.addJsonArray(firstName, lastName, userName, password);
 
     }
-    //@Test(priority = 2, description = "Adding second employee")
+    @Test(priority = 2, description = "Adding second employee")
     public void addSecondEmployee() throws InterruptedException {
         pimPage.clickOnPIMFromDashboard();
         pimPage.clickOnAddBtn();
@@ -65,6 +72,8 @@ public class PIMTestRunner extends Setup {
         addEmpPage.inputFirstName(firstName);
         String lastName = RandomInfoUtils.getLastName();
         addEmpPage.inputLastName(lastName);
+        String id = RandomInfoUtils.getUserId();
+        addEmpPage.inputEmployeeId(id);
         String userName = RandomInfoUtils.getUserName();
         addEmpPage.inputUserName(userName);
         String password = RandomInfoUtils.getPassword();
@@ -74,8 +83,8 @@ public class PIMTestRunner extends Setup {
 
         String header_actual = prsonalDtlsPage.getPersonalDetailsLabel();
         String header_expected = "Personal Details";
-
         Assert.assertEquals(header_actual, header_expected);
+
         Utils.addJsonArray(firstName, lastName, userName, password);
     }
 
@@ -95,7 +104,7 @@ public class PIMTestRunner extends Setup {
     }
 
     @Test(priority = 4, description = "Update user id")
-    public void updateUser() throws InterruptedException {
+    public void updateUserId() throws InterruptedException {
         srchPage.clickOnFirstRecord();
 
         String personalDetailsLabel_actual = prsonalDtlsPage.getPersonalDetailsLabel();
@@ -104,7 +113,7 @@ public class PIMTestRunner extends Setup {
 
         String id =""+RandomInfoUtils.getUserId();
         prsonalDtlsPage.enterEmployeedId(id);
-        prsonalDtlsPage.clickOnSaveBtn();
+        prsonalDtlsPage.clickOnPersonalDtlsSaveBtn();
         Utils.updateProperty("./src/test/resources/NewUser.json", 0, "userid", id);
     }
 
@@ -128,5 +137,72 @@ public class PIMTestRunner extends Setup {
         String loginLabel_actual = logoutPage.getLoginLabel();
         String loginLabel_expected = "Login";
         Assert.assertTrue(loginLabel_actual.contains(loginLabel_expected), "Logout unsuccessful");
+    }
+
+    @Test(priority = 7, description = "Loggin in as a second user")
+    public void doLoginAs2ndUser() {
+        String username = Utils.getProperty("./src/test/resources/NewUser.json", 1, "username");
+        String password = Utils.getProperty("./src/test/resources/NewUser.json", 1, "password");
+        loginPage.doLogin(username, password);
+
+        String userDropdownName_actual = loginPage.getUserDropdownBtnName();
+        String userDropdownName_expected = Utils.getProperty("./src/test/resources/NewUser.json", 1, "firstname");;
+        Assert.assertTrue(userDropdownName_actual.contains(userDropdownName_expected), "Login successful");
+
+        sidePnlPage.clickOnMyInfoBtn();
+        String personalDetailsLabel_actual = prsonalDtlsPage.getPersonalDetailsLabel();
+        String personalDetailsLabel_expected = "Personal Details";
+        Assert.assertEquals(personalDetailsLabel_actual, personalDetailsLabel_expected, "Not in the personal details page");
+    }
+
+    @Test(priority = 7, description = "Updating Gendertype and blood type")
+    public void updateUserGenderBloodType() throws InterruptedException {
+        String type="female";
+        Thread.sleep(5000);
+        prsonalDtlsPage.selectGenderType(type);
+        Thread.sleep(5000);
+        prsonalDtlsPage.clickOnPersonalDtlsSaveBtn();
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "gendertype", type);
+        String bloodType ="AB+";
+        prsonalDtlsPage.selectBloodType(bloodType);
+        Thread.sleep(5000);
+        prsonalDtlsPage.clickOnCustomFieldsSaveBtn();
+        Thread.sleep(5000);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "bloodtype", bloodType);
+        Thread.sleep(5000);
+    }
+
+    @Test(priority = 8)
+    public void updateContactDetailsAndEmail() throws InterruptedException {
+        prsonalDtlsPage.clickOnContactDetailsBtn();
+        Thread.sleep(5000);
+        String streetAddress = RandomInfoUtils.getStreetAddress();
+        contactPage.enterStreet1(streetAddress);
+        Thread.sleep(3000);
+        String city = RandomInfoUtils.getCity();
+        contactPage.enterCity(city);
+        Thread.sleep(3000);
+        String state = RandomInfoUtils.getState();
+        contactPage.enterStateProvince(state);
+        Thread.sleep(3000);
+        String zipCode = RandomInfoUtils.getZipCode();
+        contactPage.enterZipCode(zipCode);
+        Thread.sleep(3000);
+        //String country = RandomInfoUtils.getCountry();
+        String country = "Australia";
+        Thread.sleep(3000);
+        contactPage.selectCountry(country);
+        Thread.sleep(3000);
+        String email = RandomInfoUtils.getEmail();
+        contactPage.enterEmail(email);
+
+        contactPage.clickOnSaveBtn();
+
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "streetaddress", streetAddress);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "entercity", city);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "state", state);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "zipcode", zipCode);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "country", country);
+        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "email", email);
     }
 }

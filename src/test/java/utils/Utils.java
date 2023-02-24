@@ -103,8 +103,6 @@ public class Utils {
     }
 
     public static void main(String[] args){
-//        String name = getProperty("./src/test/resources/NewUser.json", 0, "firstname");
-//        System.out.println(name);
         String id = ""+generateRandomNumber(1000, 5000);
         updateProperty("./src/test/resources/NewUser.json", 0, "userid", id);
     }

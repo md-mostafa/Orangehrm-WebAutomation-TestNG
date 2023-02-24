@@ -3,16 +3,15 @@ package utils;
 import com.github.javafaker.Faker;
 
 public class RandomInfoUtils {
+    private static Faker faker = new Faker();
     private RandomInfoUtils() {
 
     }
 
     public static String getFirstName() {
-        Faker faker = new Faker();
         return faker.name().firstName();
     }
     public static String getLastName() {
-        Faker faker = new Faker();
         return faker.name().lastName();
     }
 
@@ -29,6 +28,31 @@ public class RandomInfoUtils {
     }
 
     public static String getUserId() {
-        return ""+generateRandomNumber(100, 500);
+        return ""+generateRandomNumber(100, 9000);
+    }
+
+    public static String getStreetAddress() {
+        return faker.address().streetAddress();
+    }
+    public static String getCity() {
+        return faker.address().city();
+    }
+
+    public static String getState() {
+        return faker.address().state();
+    }
+
+    public static String getZipCode() {
+        return faker.address().zipCode();
+    }
+
+    public static String getCountry(){
+        return faker.address().country();
+    }
+
+    public static String getEmail() {
+        String firstName = getFirstName();
+        String lastName = getLastName();
+        return firstName+""+lastName+"@gmail.com";
     }
 }

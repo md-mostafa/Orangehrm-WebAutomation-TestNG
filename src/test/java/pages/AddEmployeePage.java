@@ -33,11 +33,21 @@ public class AddEmployeePage {
         inpFirstName.sendKeys(firstName);
     }
 
+
+
     public void inputLastName(String lastName){
-        wait.waitToBeDisplayed(txtInp.get(3));
         WebElement inpLastName = txtInp.get(3);
+        wait.waitToBeDisplayed(inpLastName);
         Logs.info("Inserting lastname");
         inpLastName.sendKeys(lastName);
+    }
+
+    public void inputEmployeeId(String id){
+        WebElement empId = txtInp.get(4);
+        wait.waitToBeDisplayed(empId);
+        empId.click();
+        empId.clear();
+        empId.sendKeys(id);
     }
 
     public void inputUserName(String userName){

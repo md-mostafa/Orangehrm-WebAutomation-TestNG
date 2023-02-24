@@ -15,6 +15,7 @@ public class LogoutPage {
     @FindBy(xpath = "//h5[contains(@class, 'orangehrm-login-title')]")
     private WebElement labelLogin;
 
+
     private Waits wait;
 
 
@@ -41,4 +42,5 @@ public class LogoutPage {
         Logs.info("Getting Login label");
         return labelLogin.getText();
     }
+
 }

@@ -21,14 +21,16 @@ public class LoginPage {
     WebElement headerTxt;
     @FindBy(className = "oxd-userdropdown-img")
     WebElement profileImageElement;
-    Waits wait;
+
+    @FindBy(xpath = "//p[@class='oxd-userdropdown-name']")
+    private WebElement labelUserDropdown;
+
+    private Waits wait;
 
     public LoginPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         wait = new Waits(driver, 15);
     }
-
-
 
     public String doLoginWithInvalidCreds(String username, String password) {
         Logs.info("Inserting username in the txt field");
@@ -62,5 +64,10 @@ public class LoginPage {
         wait.waitToBeDisplayed(profileImageElement);
         Logs.info("Proflie image element is displayed or not");
         return profileImageElement.isDisplayed();
+    }
+
+    public String getUserDropdownBtnName(){
+        Logs.info("Getting user name from userDropdown btn");
+        return labelUserDropdown.getText();
     }
 }
