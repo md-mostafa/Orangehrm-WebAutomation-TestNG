@@ -60,6 +60,7 @@ allure serve allure-results
 ---
 
 #### Automation Video
+https://user-images.githubusercontent.com/41513761/221518110-399e2f59-6f21-4cb5-a703-078cc338d062.mp4
 
 
 #### Feedback
