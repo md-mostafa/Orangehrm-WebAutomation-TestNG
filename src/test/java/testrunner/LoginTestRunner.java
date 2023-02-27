@@ -5,26 +5,28 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.LoginPage;
-import setup.Setup;
+import setup.BaseTest;
 import utils.Utils;
 
-public class LoginTestRunner extends Setup {
+public class LoginTestRunner extends BaseTest {
     LoginPage loginPage;
 
-    @Test(priority = 1, description = "User can not do login if provides wrong password")
-    public void doLoginWithInvalidPass() {
-        loginPage = new LoginPage(driver);
-        String msg_actual = loginPage.doLoginWithInvalidCreds("admin", "wrongpassword");
-        String msg_expected ="Invalid credentials";
-        Assert.assertTrue(msg_actual.contains(msg_expected));
-    }
-    @Test(priority = 2, description = "User can not do login if provides wrong username")
+    @Test(priority = 1, description = "User can not do login if provides wrong username")
     public void doLoginWithInvalidUserName() {
         loginPage = new LoginPage(driver);
         String msg_actual = loginPage.doLoginWithInvalidCreds("wrongusername", "admin123");
         String msg_expected ="Invalid credentials";
-        Assert.assertTrue(msg_actual.contains(msg_expected));
+        Assert.assertTrue(msg_actual.contains(msg_expected), "Invalid credential msg didn't show");
     }
+
+    @Test(priority = 2, description = "User can not do login if provides wrong password")
+    public void doLoginWithInvalidPass() {
+        loginPage = new LoginPage(driver);
+        String msg_actual = loginPage.doLoginWithInvalidCreds("admin", "wrongpassword");
+        String msg_expected ="Invalid credentials";
+        Assert.assertTrue(msg_actual.contains(msg_expected), "Invalid credentials msg didn't show");
+    }
+
 
     @Test(priority = 3, description = "User can do login successfully")
     public void doLogin() {
@@ -46,11 +48,9 @@ public class LoginTestRunner extends Setup {
         String header_actual = loginPage.getHeaderTxt();
         String header_expected = "Dashboard";
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(header_actual, header_expected);
+        softAssert.assertEquals(header_actual, header_expected, "Login unsuccessful");
 
         softAssert.assertTrue(loginPage.profileImageIsDisplayed());
         softAssert.assertAll();
-
-
     }
 }

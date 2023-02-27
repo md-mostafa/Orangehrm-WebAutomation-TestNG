@@ -4,26 +4,25 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import utils.Browser;
+import utils.ConfigReader;
 import utils.Logs;
 import utils.Waits;
 
 public class LogoutPage {
     @FindBy(xpath = "//span[@class='oxd-userdropdown-tab']")
-    private WebElement btnUserDropdown;
+    protected WebElement btnUserDropdown;
     @FindBy(xpath = "//a[text()='Logout']")
-    private WebElement btnLogout;
+    protected WebElement btnLogout;
     @FindBy(xpath = "//h5[contains(@class, 'orangehrm-login-title')]")
-    private WebElement labelLogin;
-
+    protected WebElement labelLogin;
 
     private Waits wait;
 
-
     public LogoutPage(WebDriver driver){
         PageFactory.initElements(driver, this);
-        wait = new Waits(driver, 15);
+        wait = Browser.getWaits(ConfigReader.getTimeOuts());
     }
-
 
     public void clickOnUserDropdownBtn(){
         wait.waitToBeDisplayed(btnUserDropdown);
@@ -42,5 +41,4 @@ public class LogoutPage {
         Logs.info("Getting Login label");
         return labelLogin.getText();
     }
-
 }

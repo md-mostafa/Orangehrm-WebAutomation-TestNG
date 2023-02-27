@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import utils.Browser;
+import utils.ConfigReader;
 import utils.Logs;
 import utils.Waits;
 
@@ -29,7 +31,7 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
-        wait = new Waits(driver, 15);
+        wait = Browser.getWaits(ConfigReader.getTimeOuts());
     }
 
     public String doLoginWithInvalidCreds(String username, String password) {
@@ -42,15 +44,20 @@ public class LoginPage {
         wait.waitToBeDisplayed(btnLogin);
         Logs.info("Clicking on the login button");
         btnLogin.click();
+
         Logs.info("Getting the invalid creds label");
+        wait.waitToBeDisplayed(labelInvalidCreds);
         return labelInvalidCreds.getText();
     }
     public void doLogin(String username, String password) {
         Logs.info("Inserting username in the txt field");
+        wait.waitToBeDisplayed(txtUsername);
         txtUsername.sendKeys(username);
         Logs.info("Inserting password in the txt field");
+        wait.waitToBeDisplayed(txtPassword);
         txtPassword.sendKeys(password);
         Logs.info("Clicking on the login button");
+        wait.waitToBeDisplayed(btnLogin);
         btnLogin.click();
     }
 
@@ -68,6 +75,7 @@ public class LoginPage {
 
     public String getUserDropdownBtnName(){
         Logs.info("Getting user name from userDropdown btn");
+        wait.waitToBeDisplayed(labelUserDropdown);
         return labelUserDropdown.getText();
     }
 }

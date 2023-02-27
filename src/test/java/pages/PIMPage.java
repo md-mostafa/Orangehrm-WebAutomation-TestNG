@@ -1,20 +1,13 @@
 package pages;
 
-import org.json.simple.JSONObject;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import setup.Setup;
+import utils.Browser;
+import utils.ConfigReader;
 import utils.Logs;
-import utils.Utils;
 import utils.Waits;
-
-import java.security.Key;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PIMPage {
     @FindBy(xpath = "//span[text()='PIM']")
@@ -32,7 +25,7 @@ public class PIMPage {
     public PIMPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        wait = new Waits(driver, 20);
+        wait = Browser.getWaits(ConfigReader.getTimeOuts());
     }
 
     public void clickOnPIMFromDashboard() {
@@ -42,12 +35,11 @@ public class PIMPage {
         btnPIM.click();
     }
 
-    public void clickOnAddBtn() throws InterruptedException {
+    public void clickOnAddBtn() {
         Logs.info("Clicking on add button");
         wait.waitToBeDisplayed(btnAdd);
         wait.waitToBeClickable(btnAdd);
         btnAdd.click();
-        //Thread.sleep(5000);
     }
 
     public void clickOnEmployeeListBtn() {

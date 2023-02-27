@@ -1,7 +1,19 @@
 <suite thread-count="1" verbose="1" name="Orangehrm">
-    <test name="Login Page Test">
+    <test name="Login Test Runner">
         <classes>
             <class name="testrunner.LoginTestRunner"/>
+        </classes>
+    </test>
+
+    <test name="PIM Test Runner">
+        <classes>
+            <class name="testrunner.PIMTestRunner"/>
+        </classes>
+    </test>
+
+    <test name="Logout Test Runner">
+        <classes>
+            <class name="testrunner.LogoutPageRunner"/>
         </classes>
     </test>
 </suite>

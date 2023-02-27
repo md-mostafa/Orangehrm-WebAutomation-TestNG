@@ -1,15 +1,15 @@
 package testrunner;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.*;
-import setup.Setup;
+import setup.BaseTest;
 import utils.RandomInfoUtils;
 import utils.Utils;
 
-public class PIMTestRunner extends Setup {
+public class PIMTestRunner extends BaseTest {
     LoginPage loginPage;
     PIMPage pimPage;
     LogoutPage logoutPage;
@@ -17,10 +17,10 @@ public class PIMTestRunner extends Setup {
     AddEmployeePage addEmpPage;
     PersonalDetailsPage prsonalDtlsPage;
     SidePanelPage sidePnlPage;
-    private ContactDetailsPage contactPage;
+    ContactDetailsPage contactPage;
 
 
-    @BeforeClass
+    @BeforeTest
     public void doLoginAsAdmin() {
         loginPage = new LoginPage(driver);
         loginPage.doLogin("Admin", "admin123");
@@ -35,7 +35,7 @@ public class PIMTestRunner extends Setup {
     }
 
     @Test(priority = 1, description = "Adding first employee")
-    public void addFirstEmployee() throws InterruptedException {
+    public void addFirstEmployee() {
         prsonalDtlsPage = new PersonalDetailsPage(driver);
 
         pimPage.clickOnPIMFromDashboard();
@@ -63,7 +63,7 @@ public class PIMTestRunner extends Setup {
 
     }
     @Test(priority = 2, description = "Adding second employee")
-    public void addSecondEmployee() throws InterruptedException {
+    public void addSecondEmployee() {
         pimPage.clickOnPIMFromDashboard();
         pimPage.clickOnAddBtn();
 
@@ -93,7 +93,7 @@ public class PIMTestRunner extends Setup {
         pimPage.clickOnEmployeeListBtn();
 
         String userName = Utils.getProperty("./src/test/resources/NewUser.json", 0, "firstname");
-        srchPage.enterEmployeeNameInSrchField(userName);
+        srchPage.enterName(userName);
         srchPage.clickOnSearchBtn();
 
         String isUserFound_actual = srchPage.getUserFoundTxt();
@@ -104,7 +104,7 @@ public class PIMTestRunner extends Setup {
     }
 
     @Test(priority = 4, description = "Update user id")
-    public void updateUserId() throws InterruptedException {
+    public void updateUserId() {
         srchPage.clickOnFirstRecord();
 
         String personalDetailsLabel_actual = prsonalDtlsPage.getPersonalDetailsLabel();
@@ -118,17 +118,15 @@ public class PIMTestRunner extends Setup {
     }
 
     @Test(priority = 5, description = "Search user by id")
-    public void searchUserById() throws InterruptedException {
+    public void searchUserById() {
         pimPage.clickOnEmployeeListBtn();
         String userId = Utils.getProperty("./src/test/resources/NewUser.json", 0, "userid");
-        srchPage.enterEmployeedIdInSrchField(userId);
+        srchPage.enterId(userId);
         srchPage.clickOnSearchBtn();
 
         String isUserFound_actual = srchPage.getUserFoundTxt();
         String isUserFound_expected = "Record Found";
         Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected), "User not found by id");
-
-
     }
     @Test(priority = 6, description = "Logout")
     public void doLogOut(){
@@ -156,43 +154,37 @@ public class PIMTestRunner extends Setup {
     }
 
     @Test(priority = 7, description = "Updating Gendertype and blood type")
-    public void updateUserGenderBloodType() throws InterruptedException {
+    public void updateUserGenderBloodType() {
         String type="female";
-        Thread.sleep(5000);
         prsonalDtlsPage.selectGenderType(type);
-        Thread.sleep(5000);
         prsonalDtlsPage.clickOnPersonalDtlsSaveBtn();
         Utils.updateProperty("./src/test/resources/NewUser.json", 1, "gendertype", type);
         String bloodType ="AB+";
         prsonalDtlsPage.selectBloodType(bloodType);
-        Thread.sleep(5000);
         prsonalDtlsPage.clickOnCustomFieldsSaveBtn();
-        Thread.sleep(5000);
         Utils.updateProperty("./src/test/resources/NewUser.json", 1, "bloodtype", bloodType);
-        Thread.sleep(5000);
     }
 
-    @Test(priority = 8)
-    public void updateContactDetailsAndEmail() throws InterruptedException {
+    @Test(priority = 8, description = "Update Contact details and Email")
+    public void updateContactDetailsAndEmail() {
         prsonalDtlsPage.clickOnContactDetailsBtn();
-        Thread.sleep(5000);
+
         String streetAddress = RandomInfoUtils.getStreetAddress();
         contactPage.enterStreet1(streetAddress);
-        Thread.sleep(3000);
+
         String city = RandomInfoUtils.getCity();
         contactPage.enterCity(city);
-        Thread.sleep(3000);
+
         String state = RandomInfoUtils.getState();
         contactPage.enterStateProvince(state);
-        Thread.sleep(3000);
+
         String zipCode = RandomInfoUtils.getZipCode();
         contactPage.enterZipCode(zipCode);
-        Thread.sleep(3000);
-        //String country = RandomInfoUtils.getCountry();
+
         String country = "Australia";
-        Thread.sleep(3000);
+
         contactPage.selectCountry(country);
-        Thread.sleep(3000);
+
         String email = RandomInfoUtils.getEmail();
         contactPage.enterEmail(email);
 
@@ -205,4 +197,5 @@ public class PIMTestRunner extends Setup {
         Utils.updateProperty("./src/test/resources/NewUser.json", 1, "country", country);
         Utils.updateProperty("./src/test/resources/NewUser.json", 1, "email", email);
     }
+
 }

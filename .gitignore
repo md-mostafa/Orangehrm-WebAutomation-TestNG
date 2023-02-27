@@ -4,3 +4,4 @@ allure-results
 build
 gradle
 logs
+allure-report

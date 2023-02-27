@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import utils.Browser;
+import utils.ConfigReader;
 import utils.Logs;
 import utils.Waits;
 
@@ -17,29 +19,23 @@ public class PersonalDetailsPage {
     WebElement labelPersonalDetails;
     @FindBy(xpath = "//input[contains(@class, 'oxd-input')]")
     List<WebElement> inpPersonalDetails;
-
     @FindBy(xpath = "//button[text() =' Save ']")
     List<WebElement> btnPersonalDetails;
-
     @FindBy(xpath = "//input[@type='radio']")
     List<WebElement> radioBtns;
-
     @FindBy(xpath = "//div[@class='oxd-select-text-input']")
     List<WebElement> selectBtns;
-
     @FindBy(xpath = "//div[@class='oxd-radio-wrapper']//label")
     List<WebElement> btnsRadio;
-
     @FindBy(xpath = "//a[contains(text(), 'Contact Details')]")
     WebElement btnContactDetails;
-
-    WebDriver driver;
+    private  WebDriver driver;
     private Waits wait;
 
     public PersonalDetailsPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        wait = new Waits(driver, 20);
+        wait = Browser.getWaits(ConfigReader.getTimeOuts());
     }
 
     public String getPersonalDetailsLabel(){
@@ -49,6 +45,7 @@ public class PersonalDetailsPage {
     }
 
     public void enterEmployeedId(String id){
+        wait.waitToBeVisibleAllElements(inpPersonalDetails);
         WebElement inpEmployeeId = inpPersonalDetails.get(5);
         wait.waitToBeDisplayed(inpEmployeeId);
         wait.waitToBeClickable(inpEmployeeId);
@@ -62,6 +59,7 @@ public class PersonalDetailsPage {
     }
 
     public void clickOnPersonalDtlsSaveBtn() {
+        wait.waitToBeVisibleAllElements(btnPersonalDetails);
         WebElement btnPersonalDetail = btnPersonalDetails.get(0);
         wait.waitToBeDisplayed(btnPersonalDetail);
         wait.waitToBeClickable(btnPersonalDetail);
@@ -70,6 +68,7 @@ public class PersonalDetailsPage {
     }
 
     public void clickOnCustomFieldsSaveBtn() {
+        wait.waitToBeVisibleAllElements(btnPersonalDetails);
         WebElement btnPersonalDetail = btnPersonalDetails.get(1);
         wait.waitToBeDisplayed(btnPersonalDetail);
         wait.waitToBeClickable(btnPersonalDetail);
@@ -77,29 +76,26 @@ public class PersonalDetailsPage {
         btnPersonalDetail.click();
     }
 
-    public void selectGenderType(String type) throws InterruptedException {
+    public void selectGenderType(String type) {
         Actions action = new Actions(driver);
+        wait.waitToBeVisibleAllElements(btnsRadio);
 
         if(type == "male"){
-
-            Thread.sleep(3000);
             Logs.info("Moving cursor on radio button gender type male");
             action.moveToElement(btnsRadio.get(0)).perform();
-            Thread.sleep(3000);
             Logs.info("Clicking on gender type male radio btn");
             btnsRadio.get(0).click();
 
         }else{
-            Thread.sleep(3000);
             Logs.info("Moving cursor on radio button gender type female");
             action.moveToElement(btnsRadio.get(1)).perform();
-            Thread.sleep(3000);
             Logs.info("Clicking on gender type female radio btn");
             btnsRadio.get(1).click();
         }
     }
 
     public void selectBloodType(String type){
+        wait.waitToBeVisibleAllElements(selectBtns);
         WebElement bloodType = selectBtns.get(2);
         Logs.info("Clicking on blood type select button");
         bloodType.click();
@@ -136,6 +132,7 @@ public class PersonalDetailsPage {
     }
 
     public void clickOnContactDetailsBtn(){
+        wait.waitToBeVisible(btnContactDetails);
         Logs.info("Clicking on Contact details button");
         btnContactDetails.click();
     }

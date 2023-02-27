@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import utils.Browser;
+import utils.ConfigReader;
 import utils.Logs;
 import utils.Waits;
 
@@ -23,7 +25,7 @@ public class AddEmployeePage {
     public AddEmployeePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        wait = new Waits(driver, 20);
+        wait = Browser.getWaits(ConfigReader.getTimeOuts());
     }
 
     public void inputFirstName(String firstName){

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class Waits {
     private WebDriverWait wait;
@@ -29,6 +30,14 @@ public class Waits {
     }
     public void waitToBeDisplayed(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitToBeVisible(WebElement elm){
+        wait.until(ExpectedConditions.visibilityOf(elm));
+    }
+
+    public void waitToBeVisibleAllElements(List<WebElement> elm){
+        wait.until(ExpectedConditions.visibilityOfAllElements(elm));
     }
 
     public void waitToBeClickable(WebElement element){
