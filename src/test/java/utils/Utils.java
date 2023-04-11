@@ -44,6 +44,11 @@ public class Utils {
         return jsonArray;
     }
 
+    public int getUserJsonIdx(String fileLocation){
+        JSONArray arr = getJsonArray(fileLocation);
+        return arr.size();
+    }
+
     public static JSONObject getJsonObjFromJsonArray(String fileLocation, int idx){
         JSONArray jsonArray = getJsonArray(fileLocation);
         JSONObject jsonObj = (JSONObject) jsonArray.get(idx);
