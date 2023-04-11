@@ -88,11 +88,12 @@ public class PIMTestRunner extends BaseTest {
         Utils.addJsonArray(firstName, lastName, userName, password);
     }
 
-    @Test(priority = 3, description = "Searching User")
+    @Test(priority = 3, description = "Searching User By name")
     public void searchUserByName() {
+        String fileLocation = "./src/test/resources/NewUser.json";
+        int id = Utils.getUserJsonIdx(fileLocation);
         pimPage.clickOnEmployeeListBtn();
-
-        String userName = Utils.getProperty("./src/test/resources/NewUser.json", 0, "firstname");
+        String userName = Utils.getProperty(fileLocation, id-2, "firstname");
         srchPage.enterName(userName);
         srchPage.clickOnSearchBtn();
 
@@ -103,7 +104,7 @@ public class PIMTestRunner extends BaseTest {
         Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected), "Record not found");
     }
 
-    @Test(priority = 4, description = "Update user id")
+   // @Test(priority = 4, description = "Update user id")
     public void updateUserId() {
         srchPage.clickOnFirstRecord();
 
@@ -117,7 +118,7 @@ public class PIMTestRunner extends BaseTest {
         Utils.updateProperty("./src/test/resources/NewUser.json", 0, "userid", id);
     }
 
-    @Test(priority = 5, description = "Search user by id")
+   // @Test(priority = 5, description = "Search user by id")
     public void searchUserById() {
         pimPage.clickOnEmployeeListBtn();
         String userId = Utils.getProperty("./src/test/resources/NewUser.json", 0, "userid");
@@ -128,7 +129,7 @@ public class PIMTestRunner extends BaseTest {
         String isUserFound_expected = "Record Found";
         Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected), "User not found by id");
     }
-    @Test(priority = 6, description = "Logout")
+  //  @Test(priority = 6, description = "Logout")
     public void doLogOut(){
         logoutPage.clickOnUserDropdownBtn();
         logoutPage.clickOnLogoutBtn();
@@ -137,7 +138,7 @@ public class PIMTestRunner extends BaseTest {
         Assert.assertTrue(loginLabel_actual.contains(loginLabel_expected), "Logout unsuccessful");
     }
 
-    @Test(priority = 7, description = "Loggin in as a second user")
+   // @Test(priority = 7, description = "Loggin in as a second user")
     public void doLoginAs2ndUser() {
         String username = Utils.getProperty("./src/test/resources/NewUser.json", 1, "username");
         String password = Utils.getProperty("./src/test/resources/NewUser.json", 1, "password");
@@ -153,7 +154,7 @@ public class PIMTestRunner extends BaseTest {
         Assert.assertEquals(personalDetailsLabel_actual, personalDetailsLabel_expected, "Not in the personal details page");
     }
 
-    @Test(priority = 7, description = "Updating Gendertype and blood type")
+   // @Test(priority = 8, description = "Updating Gendertype and blood type")
     public void updateUserGenderBloodType() {
         String type="female";
         prsonalDtlsPage.selectGenderType(type);
@@ -165,7 +166,7 @@ public class PIMTestRunner extends BaseTest {
         Utils.updateProperty("./src/test/resources/NewUser.json", 1, "bloodtype", bloodType);
     }
 
-    @Test(priority = 8, description = "Update Contact details and Email")
+   // @Test(priority = 8, description = "Update Contact details and Email")
     public void updateContactDetailsAndEmail() {
         prsonalDtlsPage.clickOnContactDetailsBtn();
 

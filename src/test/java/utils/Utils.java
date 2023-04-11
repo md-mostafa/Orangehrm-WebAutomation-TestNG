@@ -44,7 +44,7 @@ public class Utils {
         return jsonArray;
     }
 
-    public int getUserJsonIdx(String fileLocation){
+    public static int getUserJsonIdx(String fileLocation){
         JSONArray arr = getJsonArray(fileLocation);
         return arr.size();
     }
