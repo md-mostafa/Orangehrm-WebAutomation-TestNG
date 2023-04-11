@@ -91,9 +91,9 @@ public class PIMTestRunner extends BaseTest {
     @Test(priority = 3, description = "Searching User By name")
     public void searchUserByName() {
         String fileLocation = "./src/test/resources/NewUser.json";
-        int id = Utils.getUserJsonIdx(fileLocation);
+        int jsonId = Utils.getUserJsonIdx(fileLocation);
         pimPage.clickOnEmployeeListBtn();
-        String userName = Utils.getProperty(fileLocation, id-2, "firstname");
+        String userName = Utils.getProperty(fileLocation, jsonId-2, "firstname");
         srchPage.enterName(userName);
         srchPage.clickOnSearchBtn();
 
@@ -104,10 +104,11 @@ public class PIMTestRunner extends BaseTest {
         Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected), "Record not found");
     }
 
-   // @Test(priority = 4, description = "Update user id")
+    @Test(priority = 4, description = "Update user id")
     public void updateUserId() {
+        String fileLocation = "./src/test/resources/NewUser.json";
+        int jsonId = Utils.getUserJsonIdx(fileLocation);
         srchPage.clickOnFirstRecord();
-
         String personalDetailsLabel_actual = prsonalDtlsPage.getPersonalDetailsLabel();
         String personalDetailsLabel_expected = "Personal Details";
         Assert.assertTrue(personalDetailsLabel_actual.contains(personalDetailsLabel_expected));
@@ -115,13 +116,16 @@ public class PIMTestRunner extends BaseTest {
         String id =""+RandomInfoUtils.getUserId();
         prsonalDtlsPage.enterEmployeedId(id);
         prsonalDtlsPage.clickOnPersonalDtlsSaveBtn();
-        Utils.updateProperty("./src/test/resources/NewUser.json", 0, "userid", id);
+        Utils.updateProperty(fileLocation, jsonId-2, "userid", id);
     }
 
-   // @Test(priority = 5, description = "Search user by id")
+    @Test(priority = 5, description = "Search user by id")
     public void searchUserById() {
+        String fileLocation = "./src/test/resources/NewUser.json";
+        int jsonId = Utils.getUserJsonIdx(fileLocation);
+
         pimPage.clickOnEmployeeListBtn();
-        String userId = Utils.getProperty("./src/test/resources/NewUser.json", 0, "userid");
+        String userId = Utils.getProperty(fileLocation, jsonId-2, "userid");
         srchPage.enterId(userId);
         srchPage.clickOnSearchBtn();
 
@@ -129,7 +133,7 @@ public class PIMTestRunner extends BaseTest {
         String isUserFound_expected = "Record Found";
         Assert.assertTrue(isUserFound_actual.contains(isUserFound_expected), "User not found by id");
     }
-  //  @Test(priority = 6, description = "Logout")
+    @Test(priority = 6, description = "Logout")
     public void doLogOut(){
         logoutPage.clickOnUserDropdownBtn();
         logoutPage.clickOnLogoutBtn();
@@ -138,14 +142,17 @@ public class PIMTestRunner extends BaseTest {
         Assert.assertTrue(loginLabel_actual.contains(loginLabel_expected), "Logout unsuccessful");
     }
 
-   // @Test(priority = 7, description = "Loggin in as a second user")
+    @Test(priority = 7, description = "Loggin in as a second user")
     public void doLoginAs2ndUser() {
-        String username = Utils.getProperty("./src/test/resources/NewUser.json", 1, "username");
-        String password = Utils.getProperty("./src/test/resources/NewUser.json", 1, "password");
+        String fileLocation = "./src/test/resources/NewUser.json";
+        int jsonId = Utils.getUserJsonIdx(fileLocation);
+
+        String username = Utils.getProperty(fileLocation, jsonId-1, "username");
+        String password = Utils.getProperty(fileLocation, jsonId-1, "password");
         loginPage.doLogin(username, password);
 
         String userDropdownName_actual = loginPage.getUserDropdownBtnName();
-        String userDropdownName_expected = Utils.getProperty("./src/test/resources/NewUser.json", 1, "firstname");;
+        String userDropdownName_expected = Utils.getProperty(fileLocation, jsonId-1, "firstname");;
         Assert.assertTrue(userDropdownName_actual.contains(userDropdownName_expected), "Login successful");
 
         sidePnlPage.clickOnMyInfoBtn();
@@ -154,20 +161,26 @@ public class PIMTestRunner extends BaseTest {
         Assert.assertEquals(personalDetailsLabel_actual, personalDetailsLabel_expected, "Not in the personal details page");
     }
 
-   // @Test(priority = 8, description = "Updating Gendertype and blood type")
+    @Test(priority = 8, description = "Updating Gendertype and blood type")
     public void updateUserGenderBloodType() {
+        String fileLocation = "./src/test/resources/NewUser.json";
+        int jsonId = Utils.getUserJsonIdx(fileLocation);
+
         String type="female";
         prsonalDtlsPage.selectGenderType(type);
         prsonalDtlsPage.clickOnPersonalDtlsSaveBtn();
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "gendertype", type);
+        Utils.updateProperty(fileLocation, jsonId-1, "gendertype", type);
         String bloodType ="AB+";
         prsonalDtlsPage.selectBloodType(bloodType);
         prsonalDtlsPage.clickOnCustomFieldsSaveBtn();
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "bloodtype", bloodType);
+        Utils.updateProperty(fileLocation, jsonId-1, "bloodtype", bloodType);
     }
 
-   // @Test(priority = 8, description = "Update Contact details and Email")
+    @Test(priority = 9, description = "Update Contact details and Email")
     public void updateContactDetailsAndEmail() {
+        String fileLocation = "./src/test/resources/NewUser.json";
+        int jsonId = Utils.getUserJsonIdx(fileLocation);
+
         prsonalDtlsPage.clickOnContactDetailsBtn();
 
         String streetAddress = RandomInfoUtils.getStreetAddress();
@@ -191,12 +204,12 @@ public class PIMTestRunner extends BaseTest {
 
         contactPage.clickOnSaveBtn();
 
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "streetaddress", streetAddress);
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "entercity", city);
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "state", state);
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "zipcode", zipCode);
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "country", country);
-        Utils.updateProperty("./src/test/resources/NewUser.json", 1, "email", email);
+        Utils.updateProperty(fileLocation, jsonId-1, "streetaddress", streetAddress);
+        Utils.updateProperty(fileLocation, jsonId-1, "entercity", city);
+        Utils.updateProperty(fileLocation, jsonId-1, "state", state);
+        Utils.updateProperty(fileLocation, jsonId-1, "zipcode", zipCode);
+        Utils.updateProperty(fileLocation, jsonId-1, "country", country);
+        Utils.updateProperty(fileLocation, jsonId-1, "email", email);
     }
 
 }
